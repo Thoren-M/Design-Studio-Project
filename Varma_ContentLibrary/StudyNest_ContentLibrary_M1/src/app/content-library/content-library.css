@@ -1,0 +1,39 @@
+.content-library {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px #00000014;
+}
+
+form > div {
+  margin-bottom: 20px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.form-actions button[type="button"] {
+  background: white;
+  color: #244b78;
+}
+
+.material-preview {
+  margin-top: 28px;
+  padding: 20px;
+  border: 1px solid #8795a5;
+  border-radius: 5px;
+}
+
+.material-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

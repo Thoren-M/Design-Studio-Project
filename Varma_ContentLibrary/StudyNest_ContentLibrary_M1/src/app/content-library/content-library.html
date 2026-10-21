@@ -1,0 +1,68 @@
+<section class="content-library">
+  <h1>StudyNest</h1>
+  <h2>Content Library</h2>
+  <p>Add your course materials and study notes.</p>
+
+  <form [formGroup]="contentLibraryForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="title">Material Title</label>
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        required
+      >
+
+      @if (contentLibraryForm.controls.title.touched &&
+           contentLibraryForm.controls.title.invalid) {
+        <p class="error">Please enter a material title.</p>
+      }
+    </div>
+
+    <div>
+      <label for="course">Course</label>
+      <input
+        id="course"
+        type="text"
+        formControlName="course"
+        required
+      >
+
+      @if (contentLibraryForm.controls.course.touched &&
+           contentLibraryForm.controls.course.invalid) {
+        <p class="error">Please enter a course.</p>
+      }
+    </div>
+
+    <div>
+      <label for="content">Content / Notes</label>
+      <textarea
+        id="content"
+        formControlName="content"
+        rows="6"
+        required
+      ></textarea>
+
+      @if (contentLibraryForm.controls.content.touched &&
+           contentLibraryForm.controls.content.invalid) {
+        <p class="error">Please enter your content or notes.</p>
+      }
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">Save Material</button>
+      <button type="button" (click)="resetForm()">Reset</button>
+    </div>
+  </form>
+
+  @if (submittedMaterial; as material) {
+    <section class="material-preview" aria-labelledby="preview-heading">
+      <h3 id="preview-heading">Submitted Material</h3>
+      <p role="status">Material submitted successfully.</p>
+      <p><strong>Title:</strong> {{ material.title }}</p>
+      <p><strong>Course:</strong> {{ material.course }}</p>
+      <p><strong>Content:</strong></p>
+      <p class="material-content">{{ material.content }}</p>
+    </section>
+  }
+</section>
