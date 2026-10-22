@@ -1,0 +1,54 @@
+.assignment-manager {
+  width: min(100%, 620px);
+  margin: 0 auto;
+  padding: 24px;
+  background: white;
+  border: 1px solid #d8dee6;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgb(36 50 71 / 10%);
+}
+
+.assignment-manager h1,
+.assignment-manager h2 {
+  margin-top: 0;
+}
+
+.assignment-manager form > div {
+  margin-bottom: 16px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #8795a5;
+  border-radius: 5px;
+  background: white;
+  font: inherit;
+}
+
+select:focus {
+  outline: 2px solid #244b78;
+  outline-offset: 2px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.form-actions button[type='button'] {
+  background: white;
+  color: #244b78;
+}
+
+.assignment-preview {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid #d8dee6;
+  border-radius: 6px;
+  background: #f8fafc;
+}
+
+.assignment-preview h3 {
+  margin-top: 0;
+}

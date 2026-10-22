@@ -1,0 +1,78 @@
+<section class="assignment-manager">
+  <h1>StudyNest</h1>
+  <h2>Assignment Manager</h2>
+  <p>Add and organize your course assignments.</p>
+
+  <form [formGroup]="assignmentForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="title">Assignment Title</label>
+      <input id="title" type="text" formControlName="title" required>
+
+      @if (assignmentForm.controls.title.touched &&
+           assignmentForm.controls.title.invalid) {
+        <p class="error">Please enter an assignment title.</p>
+      }
+    </div>
+
+    <div>
+      <label for="course">Course</label>
+      <input id="course" type="text" formControlName="course" required>
+
+      @if (assignmentForm.controls.course.touched &&
+           assignmentForm.controls.course.invalid) {
+        <p class="error">Please enter a course.</p>
+      }
+    </div>
+
+    <div>
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        rows="5"
+        required
+      ></textarea>
+
+      @if (assignmentForm.controls.description.touched &&
+           assignmentForm.controls.description.invalid) {
+        <p class="error">Please enter an assignment description.</p>
+      }
+    </div>
+
+    <div>
+      <label for="dueDate">Due Date</label>
+      <input id="dueDate" type="date" formControlName="dueDate" required>
+
+      @if (assignmentForm.controls.dueDate.touched &&
+           assignmentForm.controls.dueDate.invalid) {
+        <p class="error">Please select a due date.</p>
+      }
+    </div>
+
+    <div>
+      <label for="status">Completion Status</label>
+      <select id="status" formControlName="status" required>
+        <option value="Not Started">Not Started</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">Save Assignment</button>
+      <button type="button" (click)="resetForm()">Reset</button>
+    </div>
+  </form>
+
+  @if (submittedAssignment; as assignment) {
+    <section class="assignment-preview" aria-labelledby="preview-heading">
+      <h3 id="preview-heading">Submitted Assignment</h3>
+      <p role="status">Assignment submitted successfully.</p>
+      <p><strong>Title:</strong> {{ assignment.title }}</p>
+      <p><strong>Course:</strong> {{ assignment.course }}</p>
+      <p><strong>Description:</strong> {{ assignment.description }}</p>
+      <p><strong>Due Date:</strong> {{ assignment.dueDate }}</p>
+      <p><strong>Status:</strong> {{ assignment.status }}</p>
+    </section>
+  }
+</section>
