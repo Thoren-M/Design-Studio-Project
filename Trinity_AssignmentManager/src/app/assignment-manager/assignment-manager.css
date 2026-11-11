@@ -41,14 +41,36 @@ select:focus {
   color: #244b78;
 }
 
-.assignment-preview {
+.message {
+  margin-top: 20px;
+  padding: 10px;
+  color: #184f2b;
+  background: #eaf7ee;
+  border-radius: 5px;
+}
+
+.assignment-list {
   margin-top: 24px;
+}
+
+.assignment-card {
+  margin-top: 14px;
   padding: 16px;
   border: 1px solid #d8dee6;
   border-radius: 6px;
   background: #f8fafc;
 }
 
-.assignment-preview h3 {
+.assignment-list h3,
+.assignment-card h4 {
   margin-top: 0;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.card-actions .delete {
+  background: #a32626;
 }

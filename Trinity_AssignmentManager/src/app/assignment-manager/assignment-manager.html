@@ -59,20 +59,34 @@
     </div>
 
     <div class="form-actions">
-      <button type="submit">Save Assignment</button>
+      <button type="submit">{{ editingId ? 'Update Assignment' : 'Save Assignment' }}</button>
       <button type="button" (click)="resetForm()">Reset</button>
     </div>
   </form>
 
-  @if (submittedAssignment; as assignment) {
-    <section class="assignment-preview" aria-labelledby="preview-heading">
-      <h3 id="preview-heading">Submitted Assignment</h3>
-      <p role="status">Assignment submitted successfully.</p>
-      <p><strong>Title:</strong> {{ assignment.title }}</p>
-      <p><strong>Course:</strong> {{ assignment.course }}</p>
-      <p><strong>Description:</strong> {{ assignment.description }}</p>
-      <p><strong>Due Date:</strong> {{ assignment.dueDate }}</p>
-      <p><strong>Status:</strong> {{ assignment.status }}</p>
-    </section>
+  @if (message) {
+    <p class="message" role="status">{{ message }}</p>
   }
+
+  <section class="assignment-list" aria-labelledby="list-heading">
+    <h3 id="list-heading">Saved Assignments</h3>
+
+    @if (assignments.length === 0) {
+      <p>No assignments have been saved yet.</p>
+    }
+
+    @for (assignment of assignments; track assignment._id) {
+      <article class="assignment-card">
+        <h4>{{ assignment.title }}</h4>
+        <p><strong>Course:</strong> {{ assignment.course }}</p>
+        <p><strong>Description:</strong> {{ assignment.description }}</p>
+        <p><strong>Due Date:</strong> {{ assignment.dueDate.slice(0, 10) }}</p>
+        <p><strong>Status:</strong> {{ assignment.status }}</p>
+        <div class="card-actions">
+          <button type="button" (click)="editAssignment(assignment)">Edit</button>
+          <button type="button" class="delete" (click)="deleteAssignment(assignment._id)">Delete</button>
+        </div>
+      </article>
+    }
+  </section>
 </section>
