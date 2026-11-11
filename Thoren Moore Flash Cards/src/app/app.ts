@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Flashcards } from './flashcards/flashcards';
+import { Cards } from './cards/cards';
 @Component({
-  imports: [FormsModule,Flashcards],
+  imports: [FormsModule,Cards],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',

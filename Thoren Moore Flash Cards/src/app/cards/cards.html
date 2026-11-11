@@ -1,0 +1,71 @@
+<div class="container">
+      <h2>Add Card</h2>
+      <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+        <div>
+          <label for="front">Front of Card:</label>
+          <input id="front" type="text" formControlName="front" />
+        </div>
+
+        <div>
+          <label for="back">Back of Card:</label>
+          <input id="back" type="text" formControlName="back" />
+        </div>
+
+        <button type="submit" [disabled]="cardForm.invalid || isSubmitting()">
+          {{ isSubmitting() ? 'Saving...' : 'Add Card' }}
+        </button>
+      </form>
+
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+
+    </div>
+<div class="card-manager">
+  <h2>Cards List</h2>
+
+      @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+      }
+  <ul>
+    @for (card of cards(); track card.id) {
+      <li>
+        @if (editingCardId() === card.id) {
+          <!-- Edit Mode -->
+          <form [formGroup]="editForm" (ngSubmit)="saveEdit(card.id)">
+            <input formControlName="front" placeholder="Front" />
+            <input formControlName="back" placeholder="Back" />
+
+            <button type="submit" [disabled]="editForm.invalid || isProcessing()">
+              Save
+            </button>
+            <button type="button" (click)="cancelEdit()">Cancel</button>
+          </form>
+        } 
+        @else {
+          <!-- Display Mode -->
+          <div class="card-details">
+            <strong>{{ card.front }}</strong>: {{ card.back }}
+          </div>
+
+          <div class="card-actions">
+            <button (click)="startEdit(card)" [disabled]="isProcessing()">
+              Edit
+            </button>
+            <button
+              (click)="onDelete(card.id)"
+              class="btn-delete"
+              [disabled]="isProcessing()"
+            >
+              Delete
+            </button>
+          </div>
+        }
+      </li>
+    } 
+    @empty {
+      <li>No cards available.</li>
+    }
+  </ul>
+</div>
+
