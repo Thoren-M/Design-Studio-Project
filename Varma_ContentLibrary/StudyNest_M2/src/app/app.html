@@ -1,1 +1,29 @@
-<app-content-library></app-content-library>
+<nav class="main-nav" aria-label="Main navigation">
+  <a
+    routerLink="/flashcards"
+    routerLinkActive="active"
+    ariaCurrentWhenActive="page"
+  >
+    Flashcards
+  </a>
+
+  <a
+    routerLink="/assignments"
+    routerLinkActive="active"
+    ariaCurrentWhenActive="page"
+  >
+    Assignment Manager
+  </a>
+
+  <a
+    routerLink="/content-library"
+    routerLinkActive="active"
+    ariaCurrentWhenActive="page"
+  >
+    Content Library
+  </a>
+</nav>
+
+<main>
+  <router-outlet></router-outlet>
+</main>

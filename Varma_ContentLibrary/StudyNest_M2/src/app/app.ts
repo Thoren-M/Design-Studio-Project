@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { ContentLibrary } from './content-library/content-library';
+import {
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet
+} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ContentLibrary],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

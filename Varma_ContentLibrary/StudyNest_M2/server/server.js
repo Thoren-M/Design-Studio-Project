@@ -98,7 +98,7 @@ app.delete('/api/materials/:id', async (req, res) => {
 
   res.json({ message: 'Material deleted successfully.' });
 });
-
+app.use(require('./group-routes'));
 // Handle errors.
 app.use((error, req, res, next) => {
   if (error.name === 'ValidationError') {

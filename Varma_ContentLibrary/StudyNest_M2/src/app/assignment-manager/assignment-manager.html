@@ -1,0 +1,92 @@
+<section class="assignment-manager">
+  <h1>StudyNest</h1>
+  <h2>Assignment Manager</h2>
+  <p>Add and organize your course assignments.</p>
+
+  <form [formGroup]="assignmentForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="title">Assignment Title</label>
+      <input id="title" type="text" formControlName="title" required>
+
+      @if (assignmentForm.controls.title.touched &&
+           assignmentForm.controls.title.invalid) {
+        <p class="error">Please enter an assignment title.</p>
+      }
+    </div>
+
+    <div>
+      <label for="course">Course</label>
+      <input id="course" type="text" formControlName="course" required>
+
+      @if (assignmentForm.controls.course.touched &&
+           assignmentForm.controls.course.invalid) {
+        <p class="error">Please enter a course.</p>
+      }
+    </div>
+
+    <div>
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        formControlName="description"
+        rows="5"
+        required
+      ></textarea>
+
+      @if (assignmentForm.controls.description.touched &&
+           assignmentForm.controls.description.invalid) {
+        <p class="error">Please enter an assignment description.</p>
+      }
+    </div>
+
+    <div>
+      <label for="dueDate">Due Date</label>
+      <input id="dueDate" type="date" formControlName="dueDate" required>
+
+      @if (assignmentForm.controls.dueDate.touched &&
+           assignmentForm.controls.dueDate.invalid) {
+        <p class="error">Please select a due date.</p>
+      }
+    </div>
+
+    <div>
+      <label for="status">Completion Status</label>
+      <select id="status" formControlName="status" required>
+        <option value="Not Started">Not Started</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit">{{ editingId ? 'Update Assignment' : 'Save Assignment' }}</button>
+      <button type="button" (click)="resetForm()">Reset</button>
+    </div>
+  </form>
+
+  @if (message) {
+    <p class="message" role="status">{{ message }}</p>
+  }
+
+  <section class="assignment-list" aria-labelledby="list-heading">
+    <h3 id="list-heading">Saved Assignments</h3>
+
+    @if (assignments.length === 0) {
+      <p>No assignments have been saved yet.</p>
+    }
+
+    @for (assignment of assignments; track assignment._id) {
+      <article class="assignment-card">
+        <h4>{{ assignment.title }}</h4>
+        <p><strong>Course:</strong> {{ assignment.course }}</p>
+        <p><strong>Description:</strong> {{ assignment.description }}</p>
+        <p><strong>Due Date:</strong> {{ assignment.dueDate.slice(0, 10) }}</p>
+        <p><strong>Status:</strong> {{ assignment.status }}</p>
+        <div class="card-actions">
+          <button type="button" (click)="editAssignment(assignment)">Edit</button>
+          <button type="button" class="delete" (click)="deleteAssignment(assignment._id)">Delete</button>
+        </div>
+      </article>
+    }
+  </section>
+</section>

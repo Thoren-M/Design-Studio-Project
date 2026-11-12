@@ -1,0 +1,114 @@
+:host {
+  display: block;
+}
+
+.flashcards {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px #00000014;
+}
+
+h1 {
+  color: #244b78;
+}
+
+.form-field {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+input {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+  border: 1px solid #8795a5;
+  border-radius: 5px;
+  font: inherit;
+}
+
+button {
+  padding: 10px 18px;
+  border: 1px solid #244b78;
+  border-radius: 5px;
+  background: #244b78;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: white;
+  color: #244b78;
+}
+
+.btn-delete {
+  border-color: #b42318;
+  background: white;
+  color: #b42318;
+}
+
+.saved-cards {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #d5dce5;
+}
+
+.cards-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.saved-card {
+  margin-top: 16px;
+  padding: 20px;
+  border: 1px solid #8795a5;
+  border-radius: 5px;
+}
+
+.card-details p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.empty-state {
+  margin-top: 16px;
+}
+
+.error {
+  color: #b42318;
+}
+
+input:focus-visible,
+button:focus-visible {
+  outline: 2px solid #244b78;
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .flashcards {
+    padding: 20px;
+  }
+}
