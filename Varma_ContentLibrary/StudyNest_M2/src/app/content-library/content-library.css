@@ -1,0 +1,88 @@
+.content-library {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px #00000014;
+}
+
+fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+fieldset > div {
+  margin-bottom: 20px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.form-actions button[type="button"] {
+  background: white;
+  color: #244b78;
+}
+
+.form-actions .delete-button {
+  color: #a12121;
+  border: 1px solid #a12121;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.success {
+  color: #176137;
+  font-weight: 600;
+}
+
+.saved-materials {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #d5dce5;
+}
+
+.material-preview {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #8795a5;
+  border-radius: 5px;
+}
+
+.material-preview h4 {
+  margin-top: 0;
+  color: #244b78;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.material-preview p {
+  overflow-wrap: anywhere;
+}
+
+.material-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .content-library {
+    padding: 18px;
+  }
+
+  .material-preview {
+    padding: 14px;
+  }
+}

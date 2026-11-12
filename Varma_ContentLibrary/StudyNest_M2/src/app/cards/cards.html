@@ -1,0 +1,115 @@
+<section class="flashcards">
+  <h1>StudyNest</h1>
+  <h2>Flashcards</h2>
+  <p>Create and manage flashcards for your study sessions.</p>
+
+  <h3>Add Card</h3>
+
+  <form [formGroup]="cardForm" (ngSubmit)="onSubmit()">
+    <div class="form-field">
+      <label for="front">Front of Card</label>
+      <input
+        id="front"
+        type="text"
+        formControlName="front"
+        required
+      />
+    </div>
+
+    <div class="form-field">
+      <label for="back">Back of Card</label>
+      <input
+        id="back"
+        type="text"
+        formControlName="back"
+        required
+      />
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="cardForm.invalid || isSubmitting()"
+    >
+      {{ isSubmitting() ? 'Saving...' : 'Add Card' }}
+    </button>
+  </form>
+
+  @if (errorMessage()) {
+    <p class="error" role="alert">{{ errorMessage() }}</p>
+  }
+
+  <section class="saved-cards" aria-labelledby="cards-heading">
+    <h3 id="cards-heading">Saved Flashcards</h3>
+
+    <ul class="cards-list">
+      @for (card of cards(); track (card._id || card.id)) {
+        <li class="saved-card">
+          @if (editingCardId() === (card._id || card.id)) {
+            <form [formGroup]="editForm" (ngSubmit)="saveEdit(card)">
+              <div class="form-field">
+                <label>
+                  Front of Card
+                  <input formControlName="front" required />
+                </label>
+              </div>
+
+              <div class="form-field">
+                <label>
+                  Back of Card
+                  <input formControlName="back" required />
+                </label>
+              </div>
+
+              <div class="card-actions">
+                <button
+                  type="submit"
+                  [disabled]="editForm.invalid || isProcessing()"
+                >
+                  {{ isProcessing() ? 'Saving...' : 'Save Changes' }}
+                </button>
+
+                <button
+                  type="button"
+                  class="btn-secondary"
+                  (click)="cancelEdit()"
+                  [disabled]="isProcessing()"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          } @else {
+            <div class="card-details">
+              <p><strong>Front:</strong> {{ card.front }}</p>
+              <p><strong>Back:</strong> {{ card.back }}</p>
+            </div>
+
+            <div class="card-actions">
+              <button
+                type="button"
+                class="btn-secondary"
+                (click)="startEdit(card)"
+                [disabled]="isProcessing()"
+              >
+                Edit
+              </button>
+
+              <button
+                type="button"
+                class="btn-delete"
+                (click)="onDelete(card)"
+                [disabled]="isProcessing()"
+              >
+                Delete
+              </button>
+            </div>
+          }
+        </li>
+      } @empty {
+        <li class="empty-state">
+          No cards available. Add your first flashcard above.
+        </li>
+      }
+    </ul>
+  </section>
+</section>
