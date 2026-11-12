@@ -1,82 +1,120 @@
+const path = require('path');
+const dotenv = require('dotenv');
+
+const envResult = dotenv.config({ path: path.resolve(__dirname, '.env') });
+if (envResult.error) {
+  console.error('Could not load .env file:', envResult.error.message);
+}
+
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
-// Sample Cards
-const cards = [
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGODB_URI || '';
+
+// 1. Define the Mongoose Schema and Model
+const cardSchema = new mongoose.Schema(
   {
-    id: 1,
-    front: 'I',
-    back: 'me'
-  }
-]
-// Create the Express application.
+    front: { type: String, required: true, trim: true },
+    back: { type: String, required: true, trim: true },
+  },
+  { timestamps: true }
+);
+
+const Card = mongoose.model('Card', cardSchema);
+
+// 2. Connect to MongoDB Atlas
+mongoose
+  .connect(MONGO_URI)
+  .then(() => console.log('Connected to MongoDB Atlas'))
+  .catch((err) => console.error('Connection error:', err));
+
 const app = express();
 
-const PORT = 8000;
-
-// Allow requests from Angular.
-app.use(cors({
-  origin: 'http://localhost:4200'
-}));
-
-// Parse incoming JSON request bodies.
+app.use(
+  cors({
+    origin: 'http://localhost:4200',
+  })
+);
 app.use(express.json());
 
-// Respond to requests at the home URL.
 app.get('/', (req, res) => {
   res.send('Card API is running!');
 });
 
-// Retrieve cards.
-app.get('/cards', (req, res) => {
-  console.log('GET request received for cards');
-
-  // Return card data as JSON.
-  res.status(200).json(cards);
+// GET: Retrieve all cards from MongoDB
+app.get('/cards', async (req, res) => {
+  try {
+    const allCards = await Card.find();
+    res.status(200).json(allCards);
+  } catch (err) {
+    console.error('Error fetching cards:', err);
+    res.status(500).json({ message: 'Failed to load cards' });
+  }
 });
 
-// app.ts / server.ts
-app.post('/cards', (req, res) => {
-  // Handling logic
-  res.status(201).json(req.body);
+// POST: Create a new card in MongoDB
+app.post('/cards', async (req, res) => {
+  try {
+    const { front, back } = req.body;
+    const newCard = new Card({ front, back });
+    const savedCard = await newCard.save();
+    res.status(201).json(savedCard);
+  } catch (err) {
+    console.error('Error creating card:', err);
+    res.status(400).json({ message: 'Failed to create card', error: err.message });
+  }
 });
 
-// PUT: Update existing card
-app.put('/cards/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const { front, back } = req.body;
-
-  const cardIndex = cards.findIndex((c) => c.id === id);
-
-  if (cardIndex === -1) {
-    return res.status(404).json({ error: 'Card with ID ${id} not found.' });
+// PUT: Update an existing card in MongoDB
+app.put('/cards/:id', async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid MongoDB card ID format' });
   }
 
-  cards[cardIndex] = {
-    ...cards[cardIndex],
-    ...(front !== undefined && { front: front.trim() }),
-    ...(back !== undefined && { back: back.trim() }),
-  };
+  try {
+    const { front, back } = req.body;
+    const updatedCard = await Card.findByIdAndUpdate(
+      id,
+      {
+        ...(front !== undefined && { front: front.trim() }),
+        ...(back !== undefined && { back: back.trim() }),
+      },
+      { new: true, runValidators: true }
+    );
 
-  return res.status(200).json(cards[cardIndex]);
+    if (!updatedCard) {
+      return res.status(404).json({ message: `Card with ID ${id} not found.` });
+    }
+
+    res.status(200).json(updatedCard);
+  } catch (err) {
+    console.error('Error updating card:', err);
+    res.status(500).json({ message: 'Server error updating card' });
+  }
 });
 
-// DELETE: Remove a card by ID
-app.delete('/cards/:id', (req, res) => {
-  const id = Number(req.params.id);
-  const initialLength = cards.length;
-
-  cards = cards.filter((c) => c.id !== id);
-
-  if (cards.length === initialLength) {
-    return res.status(404).json({ error: `Card with ID ${id} not found.` });
+// DELETE: Remove a card by MongoDB _id
+app.delete('/cards/:id', async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid MongoDB card ID format' });
   }
 
-  // 204 No Content confirms successful deletion without returning a body
-  return res.status(204).send();
+  try {
+    const deletedCard = await Card.findByIdAndDelete(id);
+    if (!deletedCard) {
+      return res.status(404).json({ message: 'Card not found in database' });
+    }
+    res.status(200).json({ message: 'Card deleted', id });
+  } catch (err) {
+    console.error('Delete error:', err);
+    res.status(500).json({ message: 'Server error deleting card' });
+  }
 });
 
-// Start the server.
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
