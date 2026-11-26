@@ -1,4 +1,10 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  computed,
+  inject,
+  signal
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -27,6 +33,21 @@ export class ContentLibrary implements OnInit {
   editingId = signal<string | null>(null);
   successMessage = signal('');
   errorMessage = signal('');
+  searchTerm = signal('');
+
+  filteredMaterials = computed(() => {
+    const query = this.searchTerm().trim().toLowerCase();
+
+    if (!query) {
+      return this.materials();
+    }
+
+    return this.materials().filter(material =>
+      [material.title, material.course, material.content].some(value =>
+        value.toLowerCase().includes(query)
+      )
+    );
+  });
 
   contentLibraryForm = new FormGroup({
     title: new FormControl('', {
@@ -52,6 +73,15 @@ export class ContentLibrary implements OnInit {
 
   ngOnInit() {
     this.loadMaterials();
+  }
+
+  updateSearch(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.searchTerm.set(input.value);
+  }
+
+  clearSearch() {
+    this.searchTerm.set('');
   }
 
   loadMaterials() {
@@ -82,7 +112,6 @@ export class ContentLibrary implements OnInit {
 
     const data = this.contentLibraryForm.getRawValue();
 
-    // Reject fields containing only spaces.
     const values = {
       title: data.title.trim(),
       course: data.course.trim(),
@@ -139,6 +168,7 @@ export class ContentLibrary implements OnInit {
     }
 
     this.editingId.set(material._id);
+
     this.contentLibraryForm.reset({
       title: material.title,
       course: material.course,
