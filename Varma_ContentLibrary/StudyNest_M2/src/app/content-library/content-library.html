@@ -81,18 +81,48 @@
   <section class="saved-materials" aria-labelledby="materials-heading">
     <h3 id="materials-heading">Saved Materials</h3>
 
-    <button
-      type="button"
-      (click)="loadMaterials()"
-      [disabled]="loading() || saving() || deletingId() !== null"
-    >
-      Refresh Materials
-    </button>
+    <div class="search-controls">
+      <label for="material-search">Search Materials</label>
+      <input
+        id="material-search"
+        type="search"
+        placeholder="Search by title, course, or notes"
+        [value]="searchTerm()"
+        (input)="updateSearch($event)"
+        aria-describedby="search-help"
+      >
+      <p id="search-help">
+        Search matches any part of the title, course, or notes.
+      </p>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          (click)="clearSearch()"
+          [disabled]="searchTerm().length === 0"
+        >
+          Clear Search
+        </button>
+
+        <button
+          type="button"
+          (click)="loadMaterials()"
+          [disabled]="loading() || saving() || deletingId() !== null"
+        >
+          Refresh Materials
+        </button>
+      </div>
+    </div>
 
     @if (loading()) {
       <p role="status">Loading materials...</p>
     } @else {
-      @for (material of materials(); track material._id) {
+      <p role="status">
+        Showing {{ filteredMaterials().length }}
+        of {{ materials().length }} materials.
+      </p>
+
+      @for (material of filteredMaterials(); track material._id) {
         <article class="material-preview">
           <h4>{{ material.title }}</h4>
           <p><strong>Course:</strong> {{ material.course }}</p>
@@ -125,7 +155,11 @@
           </div>
         </article>
       } @empty {
-        <p>No materials saved yet. Add your first material above.</p>
+        @if (materials().length === 0) {
+          <p>No materials saved yet. Add your first material above.</p>
+        } @else {
+          <p>No materials match your search. Try another term or clear the search.</p>
+        }
       }
     }
   </section>
